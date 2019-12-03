@@ -101,6 +101,33 @@ def main():
     field_height = bottom_left_corner[1] - top_left_corner[1]
     field_cell_height = math.floor( field_height / ( cell_width + spacing ) )
 
+    red_pixel = ( 255, 0, 0 )
+    green_pixel = ( 0, 255, 0 )
+    blue_pixel = ( 0, 0, 255 )
+    black_pixel = ( 0, 0, 0 )
+
+    field_matrix = [[0 for x in range( field_cell_width )] for y in range( field_cell_height )]
+    for i in range( 0, field_cell_height ):
+        for j in range( 0, field_cell_width ):
+            x = i * cell_width
+            y = math.floor( ( j * cell_width ) + ( cell_width / 2 ) )
+            xy = ( first_cell_coordinates[0] + x, first_cell_coordinates[1] + y )
+            color = 0
+            for k in range( 0, cell_width ):
+                cell_pixel = minefield.getpixel( xy )
+                if cell_pixel == red_pixel:
+                    color = 3
+                elif cell_pixel == green_pixel:
+                    color = 2
+                elif cell_pixel == blue_pixel:
+                    color = 1
+                elif cell_pixel == black_pixel:
+                    color = -1
+                xy = ( xy[0], xy[1] + 1 )
+            field_matrix[i][j] = color
+
+
+
 
 if __name__ == "__main__":
     main()
