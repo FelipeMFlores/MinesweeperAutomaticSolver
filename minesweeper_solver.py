@@ -1,5 +1,6 @@
 # import cv2 as cv
 from PIL import Image
+import subprocess
 import math
 
 def main():
@@ -13,8 +14,8 @@ def main():
     print("lets sweep")
 
     # converte tela para png
-    minefield = Image.open( 'minefield.jpg' )
-    minefield.save( 'minefield.png' )
+    subprocess.call(["xwd", "-out", "minefield.xwd", "-name", "Mines"])
+    subprocess.call(["convert", "minefield.xwd", "minefield.png"])
 
     minefield = Image.open( 'minefield.png' )
     width = minefield.size[0]
