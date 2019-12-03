@@ -50,9 +50,5 @@ def main():
     # encontra quantas células o campo tem em altura
 
 
-    # descobre onde ha minas
-    mined = [[False for i in range(width)] for j in range(height)]
-
-
 if __name__ == "__main__":
     main()
