@@ -18,7 +18,7 @@ def _move_mouse(window, x, y):
 def click_mine(x, y):
     output = _get_window_id()
     _move_mouse(output, x, y)
-    time.sleep(0.1)
+    #time.sleep(0.1)
     subprocess.run(["xdotool", "click", "1"],
                    check=True)
 
@@ -26,6 +26,6 @@ def click_mine(x, y):
 def click_flag(x, y):
     output = _get_window_id()
     _move_mouse(output, x, y)
-    time.sleep(0.1)
+    #time.sleep(0.1)
     subprocess.run(["xdotool", "click", "3"],
                    check=True)

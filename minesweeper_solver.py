@@ -35,7 +35,7 @@ def main():
         for coord in plays:
             c = coord_matrix[coord[1]][coord[0]]
             mouse.click_mine(c[0], c[1])
-        time.sleep(0.25)
+        time.sleep(0.2)
         matrix, coord_matrix = get_matrix()
     print("win")
 
