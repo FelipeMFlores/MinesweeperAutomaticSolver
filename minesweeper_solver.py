@@ -22,21 +22,11 @@ def main():
     height = minefield.size[1]
     gs_minefield = minefield.convert( "L" )
     x = gs_minefield.size
-    print ( x[0] )
-    print ( x[1] ) 
-
 
     # encontra borda do campo (pixel mais escuro)
-    xy = ( 1, 1 )
+    xy = ( 1, 30 )
 
-    # pula a barra do menu
     curr_pixel = gs_minefield.getpixel( xy )
-    prev_pixel = gs_minefield.getpixel( ( xy[0], xy[1] ) )
-    while curr_pixel <= prev_pixel:
-        xy = ( xy[0], xy[1]+1 )
-        prev_pixel = curr_pixel
-        curr_pixel = gs_minefield.getpixel( xy )
-    
     prev_pixel = gs_minefield.getpixel( ( xy[0]-1, xy[1]-1 ) )
     while xy[0] < width and xy[1] < height and curr_pixel >= prev_pixel:
         xy = ( xy[0]+1, xy[1]+1 )
@@ -67,7 +57,7 @@ def main():
 
     top_right_corner = xy
     xy = top_left_corner
-
+    minefield.putpixel(xy, (0,0,0))
     # estima a largura do campo em celulas
     curr_pixel = gs_minefield.getpixel( xy )
     prev_pixel = gs_minefield.getpixel( ( xy[0]-1, xy[1]-1 ) ) 
@@ -76,7 +66,7 @@ def main():
         prev_pixel = curr_pixel
         curr_pixel = gs_minefield.getpixel( xy )
     
-    first_cell_coordinates = ( xy[0]-1, xy[1] ) 
+    first_cell_coordinates = ( xy[0], xy[1]-1 ) 
 
     xy = top_right_corner
     curr_pixel = gs_minefield.getpixel( xy )
@@ -91,6 +81,7 @@ def main():
     xy = first_cell_coordinates
     # encontra o tamanho da celula (pixel mais escuro)
     pixel_right = gs_minefield.getpixel( ( xy[0]+1, xy[1] ) )
+    curr_pixel = gs_minefield.getpixel( xy )
     cell_width = 0
     while pixel_right >= curr_pixel:        
         cell_width += 1
@@ -99,10 +90,9 @@ def main():
         pixel_right = gs_minefield.getpixel( ( xy[0]+1, xy[1] ) )
     
     cell_width += 2
-    print ( cell_width )
 
     field_width = last_cell_coordinates[0] - first_cell_coordinates[0]
-    field_cell_width = math.floor( field_width / cell_width )
+    field_cell_width = math.floor( field_width / cell_width ) + 1
 
     # estima a altura do campo em celulas
     xy = top_left_corner
@@ -127,8 +117,9 @@ def main():
 
     field_height = bottom_cell_coordinates[1] - first_cell_coordinates[1]
     field_cell_height = math.floor( field_height / cell_width ) + 1
-
+    
     black_pixel = ( 0, 0, 0 )
+    eight_pixel = ( 128, 128, 128 )
     seven_pixel = black_pixel
     six_pixel = ( 0, 128, 128 )
     five_pixel = ( 128, 0, 0 )
@@ -137,31 +128,46 @@ def main():
     two_pixel = ( 0, 128, 0 )
     one_pixel = ( 0, 0, 255 )
 
+    clicked_pixel = ( 218, 218, 218 )
+    unclicked_pixel = ( 255, 255, 255 )
+
     field_matrix = [[0 for x in range( field_cell_width )] for y in range( field_cell_height )]
     for i in range( 0, field_cell_height ):
         for j in range( 0, field_cell_width ):
             y = i * cell_width
             x = j * cell_width + math.floor( cell_width / 2 )
             xy = ( first_cell_coordinates[0] + x, first_cell_coordinates[1] + y )
-            color = 0
+            color = -3
             for k in range( 0, cell_width ):
                 cell_pixel = minefield.getpixel( xy )
-                if color == 3 and cell_pixel == black_pixel:      # bandeira
-                    color = -1
-                elif cell_pixel == seven_pixel:
-                    color = 7
-                elif cell_pixel == six_pixel:
-                    color = 6
-                elif cell_pixel == five_pixel:
-                    color = 5
-                elif cell_pixel == four_pixel:
-                    color = 4
-                elif cell_pixel == three_pixel:
-                    color = 3
-                elif cell_pixel == two_pixel:
-                    color = 2
-                elif cell_pixel == one_pixel:
-                    color = 1
+
+                # classifica a célula como clicked ou unclicked
+                if color == -3:
+                    if cell_pixel == unclicked_pixel:
+                        color = -2
+                    elif cell_pixel == clicked_pixel:
+                        color = 0
+                else:
+                    if color == -2:
+                        if cell_pixel == black_pixel:
+                            color = -1
+                    elif color == 0:
+                        if cell_pixel == eight_pixel:
+                            color = 8
+                        elif cell_pixel == seven_pixel:
+                            color = 7
+                        elif cell_pixel == six_pixel:
+                            color = 6
+                        elif cell_pixel == five_pixel:
+                            color = 5
+                        elif cell_pixel == four_pixel:
+                            color = 4
+                        elif cell_pixel == three_pixel:
+                            color = 3
+                        elif cell_pixel == two_pixel:
+                            color = 2
+                        elif cell_pixel == one_pixel:
+                            color = 1
                 xy = ( xy[0], xy[1] + 1 )
             field_matrix[i][j] = color
 
