@@ -13,13 +13,16 @@
 #             repeat all
 
 # -1 == flag/will be flaged, -2 == covered, -3 == will be clicked,
+# -4 == bomb
 # 0 == empty uncovered, number = number
 FLAG = -1
 COVERED = -2
 WILL_CLICK = -3
 EMPTY = 0
 
-#neighbors( cell ): devolve um array com todos os vizinhos da celula
+# neighbors( cell ): devolve um array com todos os vizinhos da celula
+
+
 def get_neighbors(matrix, cell):
     neighbors_list = []
     for i in range(-1, 2):
@@ -34,6 +37,7 @@ def get_neighbors(matrix, cell):
             except IndexError:
                 pass
     return neighbors_list
+
 
 def set_neighbors(matrix, cell, new_value):
     new_cells = []
@@ -51,6 +55,7 @@ def set_neighbors(matrix, cell, new_value):
             except IndexError:
                 pass
     return new_cells
+
 
 def find_all_flags(matrix):
     flags = []
@@ -70,6 +75,7 @@ def find_all_flags(matrix):
                             flags.extend(new_flags)
                             changed = True
     return flags
+
 
 def find_all_plays(matrix):
     plays = []
@@ -93,4 +99,11 @@ def find_all_plays(matrix):
 def get_flags_and_plays(matrix):
     new_flags = find_all_flags(matrix)
     new_plays = find_all_plays(matrix)
-    return new_flags, new_plays
+    # reverse coord
+    flags = []
+    for f in new_flags:
+        flags.append(f[::-1])
+    plays = []
+    for p in new_plays:
+        plays.append(p[::-1])
+    return flags, plays

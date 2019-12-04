@@ -11,8 +11,8 @@ def _get_window_id():
 
 def _move_mouse(window, x, y):
     subprocess.run(["xdotool", "mousemove", "--clearmodifiers", "--sync",
-                "--window", window, str(x), str(y)],
-                check=True)
+                    "--window", window, str(x), str(y)],
+                   check=True)
 
 
 def click_mine(x, y):
